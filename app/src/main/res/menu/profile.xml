@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+
+    >
+    <item
+        android:id="@+id/read"
+        android:icon="@drawable/read_white"
+        android:title="Okunanlar"
+        />
+    <item
+        android:id="@+id/istatistic"
+        android:icon="@drawable/istatistic_white"
+        android:title="İstatistikler"
+        />
+    <item
+        android:id="@+id/comment"
+        android:icon="@drawable/comment_white"
+        android:title="Yorumlar"
+        />
+    <item
+        android:id="@+id/saved"
+        android:icon="@drawable/saved_white"
+        android:title="Kaydedilenler"
+        />
+</menu>

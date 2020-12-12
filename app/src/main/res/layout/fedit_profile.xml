@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@color/bgs">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/bgs"
+        android:layout_height="45dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:src="@drawable/cancel_svg"
+            android:layout_height="20dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:tint="#ffffff"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/cancel"
+            tools:ignore="UseAppTint" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:singleLine="true"
+            android:text="Profili Düzenle"
+            android:fontFamily="@font/abc"
+            android:textColor="@color/colorWhite"
+            android:id="@+id/Textview"
+            android:layout_toRightOf="@id/cancel"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <ImageView
+            android:layout_width="25dp"
+            android:src="@drawable/tick_svg"
+            android:layout_height="25dp"
+            android:id="@+id/okay"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:tint="@color/color_Blue"
+            android:layout_marginLeft="15dp"
+            tools:ignore="UseAppTint" />
+    </RelativeLayout>
+ <RelativeLayout
+     android:layout_width="match_parent"
+
+     android:layout_height="match_parent">
+     <ScrollView
+         android:layout_width="match_parent"
+
+         android:layout_height="match_parent">
+         <LinearLayout
+             android:gravity="center"
+             android:layout_width="match_parent"
+             android:orientation="vertical"
+             android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:id="@+id/pp_change"
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:id="@+id/pp"
+            android:background="@drawable/circle_placeholder"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/color_Blue"
+            android:fontFamily="@font/abc"
+            android:layout_marginTop="10dp"
+            android:text="Profil fotoğrafını değiştir"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+             <com.google.android.material.textfield.TextInputLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 app:hintTextColor="@color/colorWhite"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginLeft="30dp"
+                 android:layout_marginRight="30dp"
+                 android:layout_marginBottom="10dp"
+                 android:textColorHint="@color/colorWhite"
+                 android:background="@drawable/edittext_design"
+                 android:hint="Ad">
+
+                 <EditText
+                     android:backgroundTint="@color/colorWhite"
+                     android:textColorHighlight="@color/anaYazı"
+                     android:id="@+id/ad"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:fontFamily="@font/abc"
+                     android:layout_marginRight="5dp"
+                     android:text=""
+                     android:layout_marginLeft="5dp"
+                     android:textColor="@color/colorWhite"
+                     android:textColorHint="@color/colorWhite"
+                     android:singleLine="true"
+                     />
+             </com.google.android.material.textfield.TextInputLayout>
+             <com.google.android.material.textfield.TextInputLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 app:hintTextColor="@color/colorWhite"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginLeft="30dp"
+                 android:layout_marginRight="30dp"
+                 android:layout_marginBottom="10dp"
+                 android:textColorHint="@color/colorWhite"
+                 android:background="@drawable/edittext_design"
+                 android:hint="Soyad">
+
+                 <EditText
+                     android:backgroundTint="@color/colorWhite"
+                     android:textColorHighlight="@color/anaYazı"
+                     android:id="@+id/soyad"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:fontFamily="@font/abc"
+                     android:layout_marginRight="5dp"
+                     android:text=""
+                     android:layout_marginLeft="5dp"
+                     android:textColor="@color/colorWhite"
+                     android:textColorHint="@color/colorWhite"
+                     android:singleLine="true"
+                     />
+             </com.google.android.material.textfield.TextInputLayout>
+             <com.google.android.material.textfield.TextInputLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 app:hintTextColor="@color/colorWhite"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginLeft="30dp"
+                 android:layout_marginRight="30dp"
+                 android:layout_marginBottom="10dp"
+                 android:textColorHint="@color/colorWhite"
+                 android:background="@drawable/edittext_design"
+                 android:hint="Kullanıcı adı">
+
+                 <EditText
+                     android:backgroundTint="@color/colorWhite"
+                     android:textColorHighlight="@color/anaYazı"
+                     android:id="@+id/kadi"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:fontFamily="@font/abc"
+                     android:layout_marginRight="5dp"
+                     android:text=""
+                     android:layout_marginLeft="5dp"
+                     android:textColor="@color/colorWhite"
+                     android:textColorHint="@color/colorWhite"
+                     android:singleLine="true"
+                     />
+             </com.google.android.material.textfield.TextInputLayout>
+             <com.google.android.material.textfield.TextInputLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 app:hintTextColor="@color/colorWhite"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginLeft="30dp"
+                 android:layout_marginRight="30dp"
+                 android:layout_marginBottom="10dp"
+                 android:textColorHint="@color/colorWhite"
+                 android:background="@drawable/edittext_design"
+                 android:hint="E-mail">
+
+                 <EditText
+                     android:backgroundTint="@color/colorWhite"
+                     android:textColorHighlight="@color/anaYazı"
+                     android:id="@+id/email"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:fontFamily="@font/abc"
+                     android:layout_marginRight="5dp"
+                     android:text=""
+                     android:layout_marginLeft="5dp"
+                     android:textColor="@color/colorWhite"
+                     android:textColorHint="@color/colorWhite"
+                     android:singleLine="true"
+                     />
+             </com.google.android.material.textfield.TextInputLayout>
+             <com.google.android.material.textfield.TextInputLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 app:hintTextColor="@color/colorWhite"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginLeft="30dp"
+                 android:layout_marginRight="30dp"
+                 android:layout_marginBottom="10dp"
+                 android:textColorHint="@color/colorWhite"
+                 android:background="@drawable/edittext_design"
+                 android:hint="Biyografi">
+
+                 <EditText
+                     android:backgroundTint="@color/colorWhite"
+                     android:textColorHighlight="@color/anaYazı"
+                     android:id="@+id/bio"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:fontFamily="@font/abc"
+                     android:layout_marginRight="5dp"
+                     android:text=""
+                     android:layout_marginLeft="5dp"
+                     android:textColor="@color/colorWhite"
+                     android:textColorHint="@color/colorWhite"
+                     android:singleLine="false"
+                     />
+             </com.google.android.material.textfield.TextInputLayout>
+             <Button
+                 android:background="@drawable/button_desing"
+                 android:layout_width="match_parent"
+
+                 android:layout_marginTop="10dp"
+
+                 android:id="@+id/yazarol"
+                 android:foreground="?android:attr/selectableItemBackground"
+
+
+                 android:textColor="@color/colorWhite"
+                 android:fontFamily="@font/abc"
+                 android:textAllCaps="false"
+                 android:text="Yazarlık başvurusu yap"
+                 android:layout_height="40dp"
+                 android:layout_marginStart="10dp"
+                 android:layout_marginEnd="10dp"
+                />
+             <TextView
+                 android:layout_width="match_parent"
+                 android:textColor="@color/colorWhite"
+                 android:fontFamily="@font/abc"
+                 android:textSize="7dp"
+                 android:text="30-11-2020"
+
+                 android:gravity="center"
+                 android:layout_height="wrap_content">
+
+             </TextView>
+         </LinearLayout>
+
+     </ScrollView>
+
+ </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:behavior_hideable="false"
+    android:id="@+id/botomSheet"
+    app:behavior_peekHeight="35dp"
+    android:background="@drawable/bottomsheet"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    >
+    <View
+        android:layout_width="60dp"
+        android:layout_gravity="center"
+        android:layout_height="3dp"
+        android:backgroundTint="@color/colorWhite"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
+
+        android:background="@drawable/placeholder_corner" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextColor="@color/colorWhite"
+            android:id="@+id/text"
+            android:layout_marginEnd="60dp"
+
+            android:layout_marginTop="10dp"
+            android:textColorHint="@color/colorWhite"
+            android:backgroundTint="@color/bg"
+            android:background="@drawable/edittext_design"
+            android:hint="Fikrini belirt">
+
+            <EditText
+                android:backgroundTint="@color/colorWhite"
+                android:textColorHighlight="@color/anaYazı"
+                android:id="@+id/comment"
+                android:scrollbars = "vertical"
+                android:layout_width="match_parent"
+                android:maxLines="2"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/abc"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:layout_width="50dp"
+            android:text="Paylaş"
+            android:layout_marginBottom="6dp"
+            android:paddingTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/abc"
+            android:layout_marginStart="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@id/text"
+            android:id="@+id/paylas"
+            android:textColor="@color/colorWhite"
+            android:textSize="16dp"
+            android:layout_height="wrap_content">
+
+        </TextView>
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:layout_width="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@id/text"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="20dp"
+            style="@style/SpinKitView.FadingCircle"
+            android:id="@+id/loading"
+            android:layout_height="30dp">
+
+        </com.github.ybq.android.spinkit.SpinKitView>
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/recy"
+        android:layout_marginTop="10dp"
+        android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+
+</LinearLayout>

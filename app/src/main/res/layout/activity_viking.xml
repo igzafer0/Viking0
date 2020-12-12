@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.Viking">
+  <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_above="@id/bottom_nav"
+      android:background="@color/bgs"
+      android:id="@+id/frame"
+      android:layout_height="match_parent">
+
+  </FrameLayout>
+
+
+    <me.ibrahimsn.lib.SmoothBottomBar
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        app:backgroundColor="@color/bgs"
+        app:cornerRadius="0dp"
+        app:indicatorRadius="10dp"
+        app:textSize="10sp"
+        android:id="@+id/bottom_nav"
+        app:itemFontFamily="@font/abc"
+        app:menu="@menu/menu_bottom"
+        />
+</RelativeLayout>

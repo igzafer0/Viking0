@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "832727375608",
+    "firebase_url": "https://viking-cf576.firebaseio.com",
+    "project_id": "viking-cf576",
+    "storage_bucket": "viking-cf576.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:832727375608:android:6425e99c374fc77e0a250d",
+        "android_client_info": {
+          "package_name": "com.igzafer.viking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "832727375608-coljh17r3pn4kgmuspmkgl5n3g9cqb6h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCr9umxvbVASqcEDunX9Ncr66nymromq64"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "832727375608-coljh17r3pn4kgmuspmkgl5n3g9cqb6h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

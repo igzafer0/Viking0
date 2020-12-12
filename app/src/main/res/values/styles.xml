@@ -1,0 +1,51 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/bgs</item>
+        <item name="colorPrimaryDark">@color/bg</item>
+        <item name="colorAccent">@color/colorWhite</item>
+        <item name="android:fontFamily">@font/abc</item>
+        <item name="fontFamily">@font/abc</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+
+    </style>
+    <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/bgs</item>
+        <item name="colorPrimaryDark">@color/bg</item>
+        <item name="colorAccent">@color/colorWhite</item>
+        <item name="android:fontFamily">@font/abc</item>
+        <item name="fontFamily">@font/abc</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:navigationBarColor">@color/bgs</item>
+    </style>
+<style name="FullscreenDialogTheme" parent="Theme.AppCompat.Light.DialogWhenLarge">
+    <item name="windowNoTitle">true</item>
+
+
+    <item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>
+</style>
+    <style name="LoginTheme" parent="Theme.AppCompat.Light.DialogWhenLarge">
+        <item name="windowNoTitle">true</item>
+         <item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>
+
+    </style>
+    <style name="readTheme" parent="Theme.AppCompat.Light.DialogWhenLarge">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+
+        <item name="android:navigationBarColor">@color/bg</item>
+
+
+    </style>
+    <style name="BottomSheet" parent="Theme.Design.BottomSheetDialog">
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:topRightRadius">20dp</item>
+        <item name="android:topLeftRadius">20dp</item>
+    </style>
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:windowExitAnimation">@anim/slide_in_left</item>
+    </style>
+</resources>

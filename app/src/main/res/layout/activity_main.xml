@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:background="@color/colorBlack"
+    android:layout_height="match_parent"
+    tools:context=".Activity.MainActivity">
+
+<ImageView
+    android:layout_width="250dp"
+
+
+    android:src="@drawable/app_icon"
+    android:layout_height="250dp"
+    app:tint="@color/colorWhite">
+
+</ImageView>
+
+</RelativeLayout>

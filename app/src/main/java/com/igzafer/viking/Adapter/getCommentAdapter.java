@@ -57,7 +57,7 @@ public class getCommentAdapter extends RecyclerView.Adapter<CommentHolder> {
                 public void onClick(View v) {
 
                     ReadPost.setBottomSheetStyle((FragmentActivity)main,new EWDCommentFragment(),new GetCommentFragment());
-
+                    ReadPost.mod=1;
                 }
             });
 

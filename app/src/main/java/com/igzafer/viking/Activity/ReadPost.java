@@ -1,10 +1,5 @@
 package com.igzafer.viking.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,13 +8,19 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.igzafer.viking.DialogFragment.InternetError;
 import com.igzafer.viking.Fragment.CommentFragment.EWDCommentFragment;
 import com.igzafer.viking.Fragment.CommentFragment.GetCommentFragment;
+import com.igzafer.viking.LocalDatabase.CommentStaticDb;
 import com.igzafer.viking.R;
-import com.igzafer.viking.WebView.CustomWebview;
 import com.igzafer.viking.TasarimsalDuzenlemeler.LoadinDialog;
+import com.igzafer.viking.WebView.CustomWebview;
 import com.igzafer.viking.api.Test.ConnectionTest;
 
 public class ReadPost extends AppCompatActivity implements InternetError.succ {
@@ -53,6 +54,8 @@ public class ReadPost extends AppCompatActivity implements InternetError.succ {
                 .remove(silinecek)
                 .commit();
 
+
+
     }
     private void setuptools() {
         webView = findViewById(R.id.web);
@@ -66,14 +69,22 @@ public class ReadPost extends AppCompatActivity implements InternetError.succ {
 
 
     }
-
+    public static int mod =0 ;
     @Override
     public void onBackPressed() {
-        if(bottomSheetBehavior.getState()==BottomSheetBehavior.STATE_COLLAPSED){
-            super.onBackPressed();
-           }else{
-           bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        if(mod==0){
+            if(bottomSheetBehavior.getState()==BottomSheetBehavior.STATE_COLLAPSED){
+                super.onBackPressed();
+                CommentStaticDb.scroll_position=0;
+            }else{
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        }else{
+            setBottomSheetStyle(this,new GetCommentFragment(),new EWDCommentFragment());
+            mod=0;
         }
+
     }
 
     @Override

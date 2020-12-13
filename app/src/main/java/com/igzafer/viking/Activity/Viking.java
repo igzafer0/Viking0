@@ -1,15 +1,14 @@
 package com.igzafer.viking.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.igzafer.viking.Fragment.HomeFragment.Account;
 import com.igzafer.viking.Fragment.HomeFragment.Home;
@@ -32,6 +31,7 @@ public class Viking extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viking);
         bs=findViewById(R.id.bottom_nav);
+
         loadFragment(new Home(),1);
         nav();
         getMyDetails.get(getApplicationContext(), new getMyDetailsInterface() {
@@ -57,6 +57,7 @@ public class Viking extends AppCompatActivity {
                     break;
                 case 1:
                     fragment = new Search();
+                    s_b=1;
                     break;
                 case 2:
                     fragment = new Account();
@@ -92,9 +93,10 @@ public class Viking extends AppCompatActivity {
         }
         else if(mod==2) {
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-            window.setNavigationBarColor(ContextCompat.getColor(this, R.color.bgs));
-
+                window.setNavigationBarColor(ContextCompat.getColor(this,R.color.bgs));
+            }
         }
 
 

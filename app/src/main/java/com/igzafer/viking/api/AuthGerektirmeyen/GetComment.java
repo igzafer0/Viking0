@@ -1,7 +1,6 @@
 package com.igzafer.viking.api.AuthGerektirmeyen;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Handler;
 import android.view.View;
 import android.view.Window;
@@ -10,10 +9,8 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ybq.android.spinkit.SpinKitView;
-import com.igzafer.viking.Activity.ReadPost;
 import com.igzafer.viking.Adapter.getCommentAdapter;
 import com.igzafer.viking.LocalDatabase.CommentStaticDb;
-import com.igzafer.viking.LocalDatabase.HomeStaticDb;
 import com.igzafer.viking.Model.CommentModels.getCommentModel;
 import com.igzafer.viking.RestApi.ManagerAll;
 import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
@@ -45,7 +42,7 @@ public class GetComment {
                         public void run() {
                             scrollView.setVisibility(View.VISIBLE);
                             spinner.setVisibility(View.GONE);
-                            scrollView.scrollTo(0,CommentStaticDb.scroll_position);
+                            scrollView.scrollTo(0, CommentStaticDb.scroll_position);
                         }
                         // Bazı sorunlardan dolayı 1ms gecikme ekledim, 1ms sonra nestedScrollView Static database'deki posisyona gidecek
                         // Bu sayede sayfa değiştirince geri geldiğimizde kaldığımız yerden devam edeceğiz

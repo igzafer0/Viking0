@@ -1,6 +1,5 @@
 package com.igzafer.viking.Fragment.CommentFragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,6 +43,7 @@ public class EWDCommentFragment extends Fragment {
     private void back() {
         try {
             ReadPost.setBottomSheetStyle((FragmentActivity)getContext(),new GetCommentFragment(),this);
+            ReadPost.mod=0;
         }catch (Exception e){
             Log.d("winter",e.getMessage());
             Dialog.createDialog(getActivity().getWindow(),"Hata","Bir hata oluştu",0);

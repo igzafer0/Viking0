@@ -147,6 +147,18 @@ public class GetCommentFragment extends Fragment {
                 return true;
             }
         });
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (v.getId() == R.id.recy) {
+                    bottomSheetBehavior.setDraggable(true);
+                    CommentStaticDb.scroll_position=recyclerView.getScrollY();
+                    Log.d("winter",recyclerView.getScrollX()+"");
+                    return false;
+                }
+                return true;
+            }
+        });
 
         comment.setOnTouchListener((v, event) -> {
             if (v.getId() == R.id.comment) {
@@ -163,7 +175,7 @@ public class GetCommentFragment extends Fragment {
 
             recyclerView=view.findViewById(R.id.recy);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.setHasFixedSize(true);
+            recyclerView.setHasFixedSize(false);
 
         }
         GetComment _getComment = new GetComment();

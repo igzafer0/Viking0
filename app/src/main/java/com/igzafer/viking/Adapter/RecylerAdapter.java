@@ -14,9 +14,9 @@ import com.igzafer.viking.Activity.ReadPost;
 import com.igzafer.viking.Model.BlogModels.BlogModel;
 import com.igzafer.viking.R;
 import com.igzafer.viking.ViewHolder.RecylerHolder;
-import com.igzafer.viking.amaleler.Dialog;
-import com.igzafer.viking.amaleler.LoadinDialog;
-import com.igzafer.viking.amaleler.UnsafeHttp;
+import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
+import com.igzafer.viking.TasarimsalDuzenlemeler.LoadinDialog;
+
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
@@ -59,8 +59,8 @@ public class RecylerAdapter extends RecyclerView.Adapter<RecylerHolder> {
 
                         @Override
                         public void onError(Exception e) {
-                            OkHttpClient picassoClient = UnsafeHttp.getUnsafeOkHttpClient();
-                            picasso = new Picasso.Builder(main).downloader(new OkHttp3Downloader(picassoClient)).build();
+
+                            picasso = new Picasso.Builder(main).build();
 
                             picasso.load(blogModels.get(position).getPhoto())
                                     .into(holder.imageView);

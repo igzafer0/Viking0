@@ -1,6 +1,5 @@
 package com.igzafer.viking.DialogFragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -12,19 +11,16 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import com.github.ybq.android.spinkit.SpinKitView;
-import com.igzafer.viking.Activity.Viking;
 import com.igzafer.viking.R;
-import com.igzafer.viking.amaleler.VikingApi;
 import com.igzafer.viking.api.Test.ConnectionTest;
 
-public class Erro extends DialogFragment {
+public class InternetError extends DialogFragment {
 
 
     public static DialogFragment newInstance() {
-        return new Erro();
+        return new InternetError();
     }
 
     @Override
@@ -57,7 +53,7 @@ public class Erro extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fnointernet, container, false);
-      ;
+
         retry=view.findViewById(R.id.retry);
         spinKitView=view.findViewById(R.id.spin_kit);
         retry.setOnClickListener(new View.OnClickListener() {

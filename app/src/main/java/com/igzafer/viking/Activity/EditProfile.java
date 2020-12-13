@@ -20,10 +20,10 @@ import com.igzafer.viking.Model.ErrorModels.ErrorModel;
 import com.igzafer.viking.Model.UserDetailModels.myDetailsModel;
 import com.igzafer.viking.R;
 import com.igzafer.viking.RestApi.BaseUrl;
-import com.igzafer.viking.amaleler.Dialog;
-import com.igzafer.viking.amaleler.LoadinDialog;
-import com.igzafer.viking.amaleler.StatusAndNavbar;
-import com.igzafer.viking.amaleler.UnsafeHttp;
+import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
+import com.igzafer.viking.TasarimsalDuzenlemeler.LoadinDialog;
+import com.igzafer.viking.TasarimsalDuzenlemeler.StatusAndNavbar;
+
 import com.igzafer.viking.api.AuthGerektiren.UpdateMyDetails;
 import com.igzafer.viking.api.AuthGerektiren.UpdateMyDetailsInterface;
 import com.igzafer.viking.api.AuthGerektiren.UpdateMyPp;
@@ -184,8 +184,7 @@ public class EditProfile extends AppCompatActivity {
             public void result(Boolean succsess, myDetailsModel myDetails, ErrorModel errorModel) {
                 if(succsess){
                     try {
-                        OkHttpClient picassoClient = UnsafeHttp.getUnsafeOkHttpClient();
-                        Picasso picasso = new Picasso.Builder(getApplicationContext()).downloader(new OkHttp3Downloader(picassoClient)).build();
+                        Picasso picasso = new Picasso.Builder(getApplicationContext()).build();
                         picasso.setLoggingEnabled(true);
                         picasso.load(BaseUrl.pp_Url+myDetails.getAvatar())
                                 .into(pps, new Callback() {

@@ -5,14 +5,20 @@ import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-import com.igzafer.viking.DialogFragment.Erro;
+import com.igzafer.viking.DialogFragment.InternetError;
 import com.igzafer.viking.LocalDatabase.LocalDatabase;
 import com.igzafer.viking.Model.ErrorModels.ErrorModel;
 import com.igzafer.viking.api.Test.ConnectionTest;
 
 public class TokenControl {
     //Uygulamaya önceden giriş yapmışsan ve tekrar dönüyorsan burası çalışacak.
-    public static void LoginControl(Context ctx,ControlInterface callback){
+    //1 internet var mı diye kontrol ediyor
+    //Database de login kaydı yapılmış mı diye kontrol ediyor
+    //Token hala geçerli mi diye kontrol ediyor
+    //Geçerliyse login oldu döndürüyor
+    //Geçerli değilse Login ol diyor ve databsedeki login bilgilerini çekiyor
+    //Başarılıysa true değilse false döndürüyor
+    public static void LoginControl(Context ctx, TokenControlInterface callback){
         ConnectionTest.iConnect(new ConnectionTest.conTest() {
             @Override
             public void Connected(Boolean connected) {
@@ -46,7 +52,7 @@ public class TokenControl {
                 }
 
                 }else{
-                    DialogFragment dialogFragment= Erro.newInstance();
+                    DialogFragment dialogFragment= InternetError.newInstance();
                     dialogFragment.setCancelable(false);
                     dialogFragment.show(((AppCompatActivity) ctx).getSupportFragmentManager(),"");
                 }

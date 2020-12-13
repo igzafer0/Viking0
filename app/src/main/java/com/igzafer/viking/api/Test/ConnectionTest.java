@@ -8,6 +8,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ConnectionTest {
+    //internete bağlı mı diye kontrol ediyor return ü true ve false
     public static void iConnect(conTest callback){
         Call<ResponseBody> istek= ManagerAll.getInstance().connTest();
         istek.enqueue(new Callback<ResponseBody>() {

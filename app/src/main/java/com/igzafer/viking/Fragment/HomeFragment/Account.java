@@ -3,10 +3,8 @@ package com.igzafer.viking.Fragment.HomeFragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +17,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
-
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import com.igzafer.viking.Activity.EditProfile;
@@ -31,11 +27,8 @@ import com.igzafer.viking.Model.ErrorModels.ErrorModel;
 import com.igzafer.viking.Model.UserDetailModels.myDetailsModel;
 import com.igzafer.viking.R;
 import com.igzafer.viking.RestApi.BaseUrl;
-import com.igzafer.viking.RestApi.ManagerAll;
-import com.igzafer.viking.amaleler.Dialog;
-import com.igzafer.viking.amaleler.SharedPr;
-import com.igzafer.viking.amaleler.UnsafeHttp;
-import com.igzafer.viking.api.AuthGerektiren.UpdateMyDetailsInterface;
+import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
+
 import com.igzafer.viking.api.AuthGerektiren.UpdateMyPp;
 import com.igzafer.viking.api.AuthGerektiren.getMyDetails;
 import com.igzafer.viking.api.AuthGerektiren.getMyDetailsInterface;
@@ -43,17 +36,8 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.IOException;
-
 import me.tankery.lib.circularseekbar.CircularSeekBar;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Response;
 
 
 public class Account extends Fragment {
@@ -89,8 +73,8 @@ public class Account extends Fragment {
             public void result(Boolean succsess, myDetailsModel myDetails, ErrorModel errorModel) {
                 if(succsess){
                     try {
-                        OkHttpClient picassoClient = UnsafeHttp.getUnsafeOkHttpClient();
-                        Picasso picasso = new Picasso.Builder(getContext()).downloader(new OkHttp3Downloader(picassoClient)).build();
+
+                        Picasso picasso = new Picasso.Builder(getContext()).build();
                         picasso.setLoggingEnabled(true);
                         picasso.load(BaseUrl.pp_Url+myDetails.getAvatar())
                                 .into(imageView, new Callback() {
@@ -126,8 +110,8 @@ public class Account extends Fragment {
     }
     private void LoadFromLocalDatabase() {
         try {
-            OkHttpClient picassoClient = UnsafeHttp.getUnsafeOkHttpClient();
-            Picasso picasso = new Picasso.Builder(getContext()).downloader(new OkHttp3Downloader(picassoClient)).build();
+
+            Picasso picasso = new Picasso.Builder(getContext()).build();
             picasso.setLoggingEnabled(true);
             picasso.load(BaseUrl.pp_Url+LocalDatabase.getUserDetails(getContext()).getAvatar())
                     .into(imageView, new Callback() {

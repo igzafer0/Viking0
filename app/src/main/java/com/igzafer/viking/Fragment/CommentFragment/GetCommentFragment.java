@@ -1,33 +1,32 @@
 package com.igzafer.viking.Fragment.CommentFragment;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.igzafer.viking.Activity.ReadPost;
+import com.igzafer.viking.LocalDatabase.CommentStaticDb;
 import com.igzafer.viking.Model.CommentModels.addCommentModel;
 import com.igzafer.viking.R;
-import com.igzafer.viking.amaleler.Dialog;
+import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
 import com.igzafer.viking.api.AuthGerektiren.SendComment;
 import com.igzafer.viking.api.AuthGerektiren.SendCommentInterface;
 import com.igzafer.viking.api.AuthGerektirmeyen.GetComment;
-
-import java.util.Objects;
 
 import static com.igzafer.viking.Activity.ReadPost.blogid;
 import static com.igzafer.viking.Activity.ReadPost.bottomSheetBehavior;
@@ -46,22 +45,37 @@ public class GetCommentFragment extends Fragment {
         view= inflater.inflate(R.layout.getcommentfragment, container, false);
         sendComment= new SendComment();
         setuptools();
+        setupscrool();
     return view;
     }
+
+    private void setupscrool() {
+
+        Log.d("winter",CommentStaticDb.scroll_position+"");
+    }
+
     EditText comment;
     RecyclerView recyclerView;
     TextView paylas;
     SendComment sendComment;
-    SpinKitView spinKitView;
+    SpinKitView spinKitView,spinner;
+    NestedScrollView scrollView;
     //RelativeLayout edit_rl;
+
     //yorumları bottomsheet kaydırılınca sürekli çekmesin diye boolean atadım
     Boolean kilit=true;
+    LinearLayout layout;
     @SuppressLint("ClickableViewAccessibility")
     private void setuptools() {
         setUpRecy();
+        scrollView=view.findViewById(R.id.scrollView);
+        spinner= view.findViewById(R.id.spinner);
+        spinner.setVisibility(View.VISIBLE);
         getComment();
+        layout=view.findViewById(R.id.botomSheet);
         spinKitView=view.findViewById(R.id.loading);
         spinKitView.setVisibility(View.GONE);
+
         paylas=view.findViewById(R.id.paylas);
         comment=view.findViewById(R.id.comment);
         paylas.setOnClickListener(new View.OnClickListener() {
@@ -113,16 +127,27 @@ public class GetCommentFragment extends Fragment {
 
             }
         });
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    CommentStaticDb.scroll_position=scrollY;
+                }
+            });
+        }
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (v.getId() == R.id.recy) {
+                if (v.getId() == R.id.scrollView) {
                     bottomSheetBehavior.setDraggable(true);
+                    CommentStaticDb.scroll_position=recyclerView.getScrollY();
+                    Log.d("winter",recyclerView.getScrollX()+"");
                     return false;
                 }
                 return true;
             }
         });
+
         comment.setOnTouchListener((v, event) -> {
             if (v.getId() == R.id.comment) {
                 bottomSheetBehavior.setDraggable(false);
@@ -132,18 +157,19 @@ public class GetCommentFragment extends Fragment {
         });
 
 
+
     }
         private void setUpRecy() {
 
             recyclerView=view.findViewById(R.id.recy);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.setHasFixedSize(false);
+            recyclerView.setHasFixedSize(true);
 
         }
         GetComment _getComment = new GetComment();
         private void getComment(){
             try {
-                _getComment.get(getContext(), blogid, window,recyclerView);
+                _getComment.get(getContext(), blogid, window,recyclerView,scrollView,spinner);
             }catch (Exception e){
                 Dialog.createDialog(window,"Hata",e.getMessage(),0);
             }

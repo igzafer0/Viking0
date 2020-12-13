@@ -1,4 +1,4 @@
-package com.igzafer.viking.amaleler;
+package com.igzafer.viking.TasarimsalDuzenlemeler;
 
 import android.content.Context;
 import android.graphics.Color;

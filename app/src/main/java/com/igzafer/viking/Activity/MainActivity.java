@@ -16,26 +16,22 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import com.igzafer.viking.DialogFragment.Erro;
-import com.igzafer.viking.LocalDatabase.LocalDatabase;
+import com.igzafer.viking.DialogFragment.InternetError;
 import com.igzafer.viking.Model.ErrorModels.ErrorModel;
 import com.igzafer.viking.Model.LoginRegisterModels.LoginModel;
 import com.igzafer.viking.Model.LoginRegisterModels.RegisterModel;
-import com.igzafer.viking.Model.UserDetailModels.myDetailsModel;
 import com.igzafer.viking.R;
-import com.igzafer.viking.amaleler.Dialog;
-import com.igzafer.viking.amaleler.LoadinDialog;
-import com.igzafer.viking.amaleler.StatusAndNavbar;
-import com.igzafer.viking.api.AuthGerektiren.getMyDetails;
-import com.igzafer.viking.api.AuthGerektiren.getMyDetailsInterface;
+import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
+import com.igzafer.viking.TasarimsalDuzenlemeler.LoadinDialog;
+import com.igzafer.viking.TasarimsalDuzenlemeler.StatusAndNavbar;
 import com.igzafer.viking.api.LoginRegister.TokenControl;
-import com.igzafer.viking.api.LoginRegister.ControlInterface;
+import com.igzafer.viking.api.LoginRegister.TokenControlInterface;
 import com.igzafer.viking.api.LoginRegister.Login;
 import com.igzafer.viking.api.LoginRegister.LoginInterface;
 import com.igzafer.viking.api.LoginRegister.Register;
 import com.igzafer.viking.api.LoginRegister.RegisterInterface;
 
-public class MainActivity extends AppCompatActivity implements Erro.succ{
+public class MainActivity extends AppCompatActivity implements InternetError.succ{
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     Boolean ana_sayfa=true;
@@ -53,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements Erro.succ{
     }
 
     private void loginControl(){
-        TokenControl.LoginControl(getApplicationContext(), new ControlInterface() {
+        TokenControl.LoginControl(getApplicationContext(), new TokenControlInterface() {
             @Override
             public void LoginSuccsess(Boolean success) {
                 if(success){
@@ -73,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements Erro.succ{
             StatusAndNavbar.setColor(getApplicationContext(),getWindow(),R.color.colorBlack,R.color.colorBlack);
         }
         else if(mod==2){
-            StatusAndNavbar.setColor(getApplicationContext(),getWindow(),R.color.bg,R.color.bg);
+            StatusAndNavbar.setColor(getApplicationContext(),getWindow(),R.color.bgs,R.color.bgs);
         }
     }
     Button login,register;

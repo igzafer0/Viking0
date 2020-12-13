@@ -1,11 +1,11 @@
-package com.igzafer.viking.amaleler;
+package com.igzafer.viking.LocalDatabase;
 
 import com.igzafer.viking.Model.BlogModels.BlogModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StaticDb {
+public class HomeStaticDb {
 public static List<BlogModel> blogModel;
 public static boolean homeFirst = true;
 public static int kaydirma = 0;

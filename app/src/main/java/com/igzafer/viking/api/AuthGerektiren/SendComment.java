@@ -6,18 +6,18 @@ import android.view.Window;
 import com.igzafer.viking.LocalDatabase.LocalDatabase;
 import com.igzafer.viking.Model.CommentModels.addCommentModel;
 import com.igzafer.viking.RestApi.ManagerAll;
-import com.igzafer.viking.amaleler.Dialog;
+import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
 import com.igzafer.viking.api.LoginRegister.TokenControl;
-import com.igzafer.viking.api.LoginRegister.ControlInterface;
-import com.igzafer.viking.api.Test.ConnectionTest;
+import com.igzafer.viking.api.LoginRegister.TokenControlInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SendComment{
+    //yorum ekliyor
     public void add(Context ctx, addCommentModel commentModel, Window window, SendCommentInterface callback){
-        TokenControl.LoginControl(ctx, new ControlInterface() {
+        TokenControl.LoginControl(ctx, new TokenControlInterface() {
             @Override
             public void LoginSuccsess(Boolean success) {
                 if(success){

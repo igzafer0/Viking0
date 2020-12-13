@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    app:behavior_hideable="false"
-    android:id="@+id/botomSheet"
-    app:behavior_peekHeight="35dp"
+
     android:background="@drawable/bottomsheet"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     >
+
+    <LinearLayout
+        app:behavior_hideable="false"
+
+        app:behavior_peekHeight="35dp"
+        android:id="@+id/botomSheet"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <View
         android:layout_width="60dp"
         android:layout_gravity="center"
@@ -82,14 +88,30 @@
 
         </com.github.ybq.android.spinkit.SpinKitView>
     </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:id="@+id/scrollView"
+        android:layout_height="match_parent">
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:id="@+id/recy"
-        android:layout_marginTop="10dp"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    </androidx.core.widget.NestedScrollView>
 
-
-</LinearLayout>
+    </LinearLayout>
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:SpinKit_Style="FadingCircle"
+        android:id="@+id/spinner"
+        />
+</RelativeLayout>

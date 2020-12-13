@@ -1,5 +1,5 @@
 package com.igzafer.viking.api.LoginRegister;
 
-public interface ControlInterface {
+public interface TokenControlInterface {
     void LoginSuccsess(Boolean success);
 }

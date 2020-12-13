@@ -18,7 +18,7 @@ import com.igzafer.viking.LocalDatabase.LocalDatabase;
 import com.igzafer.viking.Model.ErrorModels.ErrorModel;
 import com.igzafer.viking.Model.UserDetailModels.myDetailsModel;
 import com.igzafer.viking.R;
-import com.igzafer.viking.amaleler.Dialog;
+import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
 import com.igzafer.viking.api.AuthGerektiren.getMyDetails;
 import com.igzafer.viking.api.AuthGerektiren.getMyDetailsInterface;
 

@@ -19,9 +19,8 @@ import com.igzafer.viking.Adapter.PlaceholderAdapter;
 import com.igzafer.viking.Adapter.RecylerAdapter;
 import com.igzafer.viking.Model.BlogModels.BlogModel;
 import com.igzafer.viking.R;
-import com.igzafer.viking.amaleler.Dialog;
-import com.igzafer.viking.amaleler.StaticDb;
-import com.igzafer.viking.amaleler.VikingApi;
+import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
+import com.igzafer.viking.LocalDatabase.HomeStaticDb;
 import com.igzafer.viking.api.AuthGerektirmeyen.GetBlog;
 
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class Home extends Fragment{
         hndler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(StaticDb.homeFirst){
+                if(HomeStaticDb.homeFirst){
                     setShimmerEffectandLoad();
                 }else{
                     getBlogWithStaticDb();
@@ -77,7 +76,6 @@ public class Home extends Fragment{
                 public void onRefresh() {
                     GetBlog.pageNumber=1;
                     GetBlog.blogModels.clear();
-
                     getBlogWithApi();
                     //Refresh yaparken her şeyi 0'lıyorum.
                 }
@@ -88,7 +86,7 @@ public class Home extends Fragment{
                 nestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                     @Override
                     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        StaticDb.setScrollPosition(scrollY);
+                        HomeStaticDb.setScrollPosition(scrollY);
                         if(v.getMeasuredHeight() == ((nestedScrollView.getChildAt(0).getMeasuredHeight())-(scrollY))){
                             spin_kit.setVisibility(View.VISIBLE);
                             if(GetBlog.pageNumber<GetBlog.maxPage){ ;
@@ -123,7 +121,7 @@ public class Home extends Fragment{
     }
     private void getBlogWithStaticDb(){
         setUpRecy();
-        recylerAdapter=new RecylerAdapter(getContext(),StaticDb.blogModel,getActivity().getWindow());
+        recylerAdapter=new RecylerAdapter(getContext(), HomeStaticDb.blogModel,getActivity().getWindow());
         recyclerView.setAdapter(recylerAdapter);
         refreshLayout.setRefreshing(false);
         spin_kit.setVisibility(View.INVISIBLE);
@@ -131,7 +129,7 @@ public class Home extends Fragment{
         hndler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                nestedScrollView.scrollTo(0,StaticDb.kaydirma);
+                nestedScrollView.scrollTo(0, HomeStaticDb.kaydirma);
             }
             // Bazı sorunlardan dolayı 1ms gecikme ekledim, 1ms sonra nestedScrollView Static database'deki posisyona gidecek
             // Bu sayede sayfa değiştirince geri geldiğimizde kaldığımız yerden devam edeceğiz

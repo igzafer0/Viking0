@@ -14,6 +14,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Login {
+    //Giriş yapıyor
     public static void login(Context ctx, LoginModel loginModel, LoginInterface callback){
         Call<GetTokenModel> istek = ManagerAll.getInstance().login(loginModel);
         istek.enqueue(new Callback<GetTokenModel>() {

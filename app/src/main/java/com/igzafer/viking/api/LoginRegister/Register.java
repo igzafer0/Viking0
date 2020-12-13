@@ -15,6 +15,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Register {
+    //Kayıt oluyor
     public static void register(Context ctx, RegisterModel registerModel, RegisterInterface callback){
         Call<GetTokenModel> istek = ManagerAll.getInstance().register(registerModel);
         istek.enqueue(new Callback<GetTokenModel>() {

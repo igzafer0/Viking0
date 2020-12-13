@@ -1,11 +1,7 @@
-package com.igzafer.viking.amaleler;
+package com.igzafer.viking.WebView;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.net.http.SslError;
-import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.webkit.SslErrorHandler;
@@ -14,30 +10,18 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.igzafer.viking.DialogFragment.Erro;
-import com.igzafer.viking.DialogFragment.ReadBlog;
 import com.igzafer.viking.RestApi.BaseUrl;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import com.igzafer.viking.TasarimsalDuzenlemeler.LoadinDialog;
 
 public class CustomWebview extends WebViewClient {
     Context main;
-    RelativeLayout bs;
-    public void tanim(final WebView webView, int blogid, Context context, RelativeLayout bm){
+    RelativeLayout rl;
+    public void tanim(final WebView webView, int blogid, Context context,RelativeLayout rl1){
         main=context;
-        bs=bm;
+        rl=rl1;
         //LoadinDialog.isVisible(main,true);
-
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -48,13 +32,15 @@ public class CustomWebview extends WebViewClient {
         webView.setScrollbarFadingEnabled(false);
         webView.setWebViewClient(this);
         webView.loadUrl(BaseUrl.site_url+"blogs/getblog?id="+blogid);
+
+
     }
 
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
         LoadinDialog.isVisible(main,false);
-        bs.setVisibility(View.VISIBLE);
+        rl.setVisibility(View.VISIBLE);
 
     }
 

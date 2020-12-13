@@ -11,14 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dinuscxj.refresh.RecyclerRefreshLayout;
 import com.google.gson.Gson;
 import com.igzafer.viking.Adapter.RecylerAdapter;
-import com.igzafer.viking.DialogFragment.Erro;
+import com.igzafer.viking.DialogFragment.InternetError;
 import com.igzafer.viking.Model.BlogModels.BlogModel;
 import com.igzafer.viking.Model.BlogModels.GetBlogByPageModel;
 import com.igzafer.viking.Model.BlogModels.PageModel;
 import com.igzafer.viking.RestApi.ManagerAll;
-import com.igzafer.viking.amaleler.Dialog;
-import com.igzafer.viking.amaleler.StaticDb;
-import com.igzafer.viking.amaleler.StatusAndNavbar;
+import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
+import com.igzafer.viking.LocalDatabase.HomeStaticDb;
 import com.igzafer.viking.api.Test.ConnectionTest;
 
 import java.util.ArrayList;
@@ -59,7 +58,7 @@ public class GetBlog{
                             public void onResponse(Call<List<BlogModel>> call, Response<List<BlogModel>> response) {
                                 if(response.isSuccessful()){
                                     blogModels.addAll(response.body());
-                                    StaticDb.loadBlog(blogModels);
+                                    HomeStaticDb.loadBlog(blogModels);
                                     //response'u blog modelime attım
                                     String head=response.headers().get("X-Pagination");
                                     Gson g = new Gson();
@@ -93,7 +92,7 @@ public class GetBlog{
                     }else{
                         kilit=true;
                         //internete bağlı değilse dialog fragment çıkartıyor
-                        DialogFragment dialogFragment= Erro.newInstance();
+                        DialogFragment dialogFragment= InternetError.newInstance();
                         dialogFragment.setTargetFragment(fragment, 1);
                         dialogFragment.setCancelable(false);
                         dialogFragment.show(((AppCompatActivity) ctx).getSupportFragmentManager(),"");

@@ -8,14 +8,15 @@ import com.igzafer.viking.Model.ErrorModels.ErrorModel;
 import com.igzafer.viking.Model.UserDetailModels.myDetailsModel;
 import com.igzafer.viking.RestApi.ManagerAll;
 import com.igzafer.viking.api.LoginRegister.TokenControl;
-import com.igzafer.viking.api.LoginRegister.ControlInterface;
+import com.igzafer.viking.api.LoginRegister.TokenControlInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class getMyDetails {
+    //Kendi detaylarını çekiyor ve locale kaydediyor
     public static void get(Context ctx,getMyDetailsInterface callback){
-        TokenControl.LoginControl(ctx, new ControlInterface() {
+        TokenControl.LoginControl(ctx, new TokenControlInterface() {
             @Override
             public void LoginSuccsess(Boolean success) {
                 if(success){

@@ -19,7 +19,7 @@ public class TokenIsValid{
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful())
                 {
-                    callback.isValid(true);
+                    callback.isValid(true);;
                 }
                 else {
                     callback.isValid(false);

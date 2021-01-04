@@ -13,37 +13,47 @@ import androidx.fragment.app.Fragment;
 import com.igzafer.viking.Fragment.HomeFragment.Account;
 import com.igzafer.viking.Fragment.HomeFragment.Home;
 import com.igzafer.viking.Fragment.HomeFragment.Search;
+import com.igzafer.viking.Interfaces.IMainResponse;
 import com.igzafer.viking.LocalDatabase.LocalDatabase;
 import com.igzafer.viking.Model.ErrorModels.ErrorModel;
 import com.igzafer.viking.Model.UserDetailModels.myDetailsModel;
 import com.igzafer.viking.R;
 import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
-import com.igzafer.viking.api.AuthGerektiren.getMyDetails;
-import com.igzafer.viking.api.AuthGerektiren.getMyDetailsInterface;
+import com.igzafer.viking.api.AuthGerektiren.MyDetails;
 
 import me.ibrahimsn.lib.SmoothBottomBar;
+import retrofit2.Response;
 
 
 public class Viking extends AppCompatActivity {
     SmoothBottomBar bs;
+    myDetailsModel myDetails;
+    MyDetails my=new MyDetails();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_viking);
+        setContentView(R.layout.aviking);
         bs=findViewById(R.id.bottom_nav);
-
         loadFragment(new Home(),1);
         nav();
-        getMyDetails.get(getApplicationContext(), new getMyDetailsInterface() {
+        my.getDetails(getApplicationContext(), new IMainResponse() {
             @Override
-            public void result(Boolean succsess, myDetailsModel myDetails, ErrorModel errorModel) {
-                if(succsess){
-                    LocalDatabase.setUserDetails(getApplicationContext(),myDetails);
-                }else{
-                    Dialog.createDialog(getWindow(),"Hata","Hata, Kullanıcı bilgileriniz alınamadı.",0);
+            public <T> void Succsess(Response<T> response) {
+                myDetails= (myDetailsModel) response.body();
+                LocalDatabase.setUserDetails(getApplicationContext(),myDetails);
+            }
+
+            @Override
+            public void Error(ErrorModel returnList) {
+                try {
+                   new Dialog().createDialog(getWindow(),returnList.getBody(),0);
+                }catch (Exception e){
+                   new Dialog().createDialog(getWindow(),0);
                 }
             }
+
         });
+
     }
     int s_b=1;
     private void nav() {

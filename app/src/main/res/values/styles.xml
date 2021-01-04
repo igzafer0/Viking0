@@ -1,12 +1,25 @@
 <resources>
     <!-- Base application theme. -->
+    <style name="SelectableItemTheme">
+        <item name="colorControlHighlight">@color/dumanlı_white</item>
+        <item name="android:opacity">translucent</item>
+    </style>
+    <style name="SelectableItemBackgroundImage">
+        <item name="android:theme">@style/SelectableItemTheme</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+    </style>
+    <style name="SelectableItemBackgroundButton">
+        <item name="android:theme">@style/SelectableItemTheme</item>
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/bgs</item>
         <item name="colorPrimaryDark">@color/bg</item>
         <item name="colorAccent">@color/colorWhite</item>
-        <item name="android:fontFamily">@font/abc</item>
-        <item name="fontFamily">@font/abc</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+
+        <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
 
     </style>
     <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">
@@ -15,14 +28,12 @@
         <item name="colorPrimaryDark">@color/bg</item>
         <item name="colorAccent">@color/colorWhite</item>
         <item name="android:fontFamily">@font/abc</item>
-        <item name="fontFamily">@font/abc</item> <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
+         <!-- target android sdk versions < 26 and > 14 if theme other than AppCompat -->
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:navigationBarColor">@color/bgs</item>
     </style>
 <style name="FullscreenDialogTheme" parent="Theme.AppCompat.Light.DialogWhenLarge">
     <item name="windowNoTitle">true</item>
-
-
     <item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>
 </style>
     <style name="LoginTheme" parent="Theme.AppCompat.Light.DialogWhenLarge">
@@ -33,7 +44,6 @@
     <style name="readTheme" parent="Theme.AppCompat.Light.DialogWhenLarge">
         <item name="windowNoTitle">true</item>
         <item name="android:windowTranslucentStatus">true</item>
-
         <item name="android:navigationBarColor">@color/bg</item>
 
 

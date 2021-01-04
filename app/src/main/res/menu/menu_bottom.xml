@@ -12,12 +12,12 @@
     />
     <item
         android:id="@+id/search"
-        android:icon="@drawable/searc_white"
+        android:icon="@drawable/svgsearch"
         android:title="Ara"
         />
     <item
         android:id="@+id/account"
-        android:icon="@drawable/account_white"
+        android:icon="@drawable/svguser"
          android:title="Hesap"
          />
 </menu>

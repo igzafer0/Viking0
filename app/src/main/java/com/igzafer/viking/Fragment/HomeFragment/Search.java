@@ -1,5 +1,6 @@
 package com.igzafer.viking.Fragment.HomeFragment;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,7 +10,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,7 +27,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class Search extends Fragment implements Html.ImageGetter{
@@ -41,7 +40,7 @@ public class Search extends Fragment implements Html.ImageGetter{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_search, container, false);
+        view = inflater.inflate(R.layout.fsearch, container, false);
         tw=((TextView)view.findViewById(R.id.tw));
 
        // tw.setText(Html.fromHtml(text, new URLImageParser(tw, getContext()), null));
@@ -51,13 +50,13 @@ public class Search extends Fragment implements Html.ImageGetter{
 
         return view;
     }
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public Drawable getDrawable(String source) {
         LevelListDrawable d = new LevelListDrawable();
-        Drawable empty = getResources().getDrawable(R.drawable.account_white);
+      Drawable empty = getResources().getDrawable(R.drawable.svguser);
         d.addLevel(0, 0, empty);
         d.setBounds(0, 0, 0, empty.getIntrinsicHeight());
-
         new LoadImage().execute(source, d);
 
         return d;

@@ -1,7 +1,6 @@
 package com.igzafer.viking.Fragment.CommentFragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,7 @@ public class EWDCommentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.ewdcommentfragment, container, false);
+        view = inflater.inflate(R.layout.fcommentreply, container, false);
         tools();
         return view;
     }
@@ -42,11 +41,12 @@ public class EWDCommentFragment extends Fragment {
 
     private void back() {
         try {
-            ReadPost.setBottomSheetStyle((FragmentActivity)getContext(),new GetCommentFragment(),this);
+            ReadPost.setBottomSheetStyle((FragmentActivity) requireContext(),new GetCommentFragment(),this);
             ReadPost.mod=0;
         }catch (Exception e){
-            Log.d("winter",e.getMessage());
-            Dialog.createDialog(getActivity().getWindow(),"Hata","Bir hata oluştu",0);
+            if(getActivity()!=null){
+                new Dialog().createDialog(getActivity().getWindow(),0);
+            }
         }
 
 

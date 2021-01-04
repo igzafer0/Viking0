@@ -1,8 +1,5 @@
 package com.igzafer.viking.Activity;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,7 +12,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.igzafer.viking.Interfaces.IMainResponse;
 import com.igzafer.viking.Model.ErrorModels.ErrorModel;
 import com.igzafer.viking.Model.UserDetailModels.myDetailsModel;
 import com.igzafer.viking.R;
@@ -23,32 +24,30 @@ import com.igzafer.viking.RestApi.BaseUrl;
 import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
 import com.igzafer.viking.TasarimsalDuzenlemeler.LoadinDialog;
 import com.igzafer.viking.TasarimsalDuzenlemeler.StatusAndNavbar;
-
-import com.igzafer.viking.api.AuthGerektiren.UpdateMyDetails;
-import com.igzafer.viking.api.AuthGerektiren.UpdateMyDetailsInterface;
-import com.igzafer.viking.api.AuthGerektiren.UpdateMyPp;
-import com.igzafer.viking.api.AuthGerektiren.getMyDetails;
-import com.igzafer.viking.api.AuthGerektiren.getMyDetailsInterface;
+import com.igzafer.viking.api.AuthGerektiren.MyDetails;
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
-import okhttp3.OkHttpClient;
+import retrofit2.Response;
 
 public class EditProfile extends AppCompatActivity {
     ImageView pps,onay,cancel;
     EditText ad,soyad,kadi,bio,email;
     String pp_link;
     LinearLayout pp_change;
+    myDetailsModel myDetails;
+    MyDetails myUser = new MyDetails();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fedit_profile);
+        setContentView(R.layout.aeditprofile);
+
         status_Bar();
         settools();
         LoadinDialog.isVisible(this,true);
         getData();
     }
+
     private void status_Bar() {
         StatusAndNavbar.setColor(getApplicationContext(),getWindow(),R.color.bgs,R.color.bgs);
     }
@@ -83,7 +82,7 @@ public class EditProfile extends AppCompatActivity {
                 Log.d("winter","ss");
                 try {
 
-                    View sheetView = LayoutInflater.from(EditProfile.this).inflate(R.layout.bottom, null);
+                    View sheetView = LayoutInflater.from(EditProfile.this).inflate(R.layout.bottomsheetpp, null);
                     BottomSheetDialog pp = new BottomSheetDialog(EditProfile.this);
                     pp.setContentView(sheetView);
                     pp.show();
@@ -162,83 +161,96 @@ public class EditProfile extends AppCompatActivity {
         }
 
     }
-    UpdateMyPp updateMyPp;
     private void updatePp(Uri uri){
-        updateMyPp.update(getApplicationContext(), uri, new UpdateMyDetailsInterface() {
+
+        myUser.changeProfilePicture(getApplicationContext(), uri, new IMainResponse() {
             @Override
-            public void result(Boolean succsess, ErrorModel errorModel) {
-                if(succsess){
-                    finish();
-                }else{
-                    Dialog.createDialog(getWindow(),errorModel.getIslem(),errorModel.getHata(),0);
+            public <T> void Succsess(Response<T> response) {
+                finish();
+            }
+
+            @Override
+            public void Error(ErrorModel returnList) {
+                try {
+                    new Dialog().createDialog(getWindow(), returnList.getBody(), 0);
+                }catch (Exception e){
+                    new Dialog().createDialog(getWindow(),  0);
                 }
             }
+
         });
-
-
     }
 
     private void getData(){
-        getMyDetails.get(getApplicationContext(), new getMyDetailsInterface() {
+        //Dialog.createDialog(getWindow(),errorModel.getTitle(),errorModel.getBody(),0);
+        myUser.getDetails(getApplicationContext(), new IMainResponse() {
             @Override
-            public void result(Boolean succsess, myDetailsModel myDetails, ErrorModel errorModel) {
-                if(succsess){
-                    try {
-                        Picasso picasso = new Picasso.Builder(getApplicationContext()).build();
-                        picasso.setLoggingEnabled(true);
-                        picasso.load(BaseUrl.pp_Url+myDetails.getAvatar())
-                                .into(pps, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                        if(myDetails.getAd()!=null){
-                                            ad.setText(myDetails.getAd());
-                                        }
-                                        if(myDetails.getSoyad()!=null){
-                                            soyad.setText(myDetails.getSoyad());
-                                        }
-                                        kadi.setText(myDetails.getNick());
-                                        email.setText(myDetails.getEmail());
-                                        if(myDetails.getBiyografi()!=null){
-                                            bio.setText(myDetails.getBiyografi());
-                                        }
-                                        LoadinDialog.isVisible(getApplicationContext(),false);
-                                    }
+            public <T> void Succsess(Response<T> response) {
+                try {
+                    myDetails= (myDetailsModel) response.body();
+                    Picasso picasso = new Picasso.Builder(getApplicationContext()).build();
+                    picasso.setLoggingEnabled(true);
 
-                                    @Override
-                                    public void onError(Exception e) {
-                                        if(myDetails.getAd()!=null){
-                                            ad.setText(myDetails.getAd());
-                                        }
-                                        if(myDetails.getSoyad()!=null){
-                                            soyad.setText(myDetails.getSoyad());
-                                        }
-                                        kadi.setText(myDetails.getNick());
-                                        email.setText(myDetails.getEmail());
-                                        if(myDetails.getBiyografi()!=null){
-                                            bio.setText(myDetails.getBiyografi());
-                                        }
-                                        LoadinDialog.isVisible(getApplicationContext(),false);
-                                        Log.d("winter",e.getMessage());
+                    picasso.load(BaseUrl.pp_Url+myDetails.getAvatar())
+                            .into(pps, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    if(myDetails.getAd()!=null){
+                                        ad.setText(myDetails.getAd());
                                     }
-                                });
+                                    if(myDetails.getSoyad()!=null){
+                                        soyad.setText(myDetails.getSoyad());
+                                    }
+                                    kadi.setText(myDetails.getNick());
+                                    email.setText(myDetails.getEmail());
+                                    if(myDetails.getBiyografi()!=null){
+                                        bio.setText(myDetails.getBiyografi());
+                                    }
+                                    LoadinDialog.isVisible(getApplicationContext(),false);
+                                }
 
+                                @Override
+                                public void onError(Exception e) {
+                                    if(myDetails.getAd()!=null){
+                                        ad.setText(myDetails.getAd());
+                                    }
+                                    if(myDetails.getSoyad()!=null){
+                                        soyad.setText(myDetails.getSoyad());
+                                    }
+                                    kadi.setText(myDetails.getNick());
+                                    email.setText(myDetails.getEmail());
+                                    if(myDetails.getBiyografi()!=null){
+                                        bio.setText(myDetails.getBiyografi());
+                                    }
+                                    LoadinDialog.isVisible(getApplicationContext(),false);
+                                    Log.d("winter",e.getMessage());
+                                }
+                            });
+
+                }
+                catch (Exception e){
+                    if(myDetails.getAd()!=null){
+                        ad.setText(myDetails.getAd());
                     }
-                    catch (Exception e){
-                        if(myDetails.getAd()!=null){
-                            ad.setText(myDetails.getAd());
-                        }
-                        if(myDetails.getSoyad()!=null){
-                            soyad.setText(myDetails.getSoyad());
-                        }
-                        kadi.setText(myDetails.getNick());
-                        email.setText(myDetails.getEmail());
-                        if(myDetails.getBiyografi()!=null){
-                            bio.setText(myDetails.getBiyografi());
-                        }
-                        LoadinDialog.isVisible(getApplicationContext(),false);
+                    if(myDetails.getSoyad()!=null){
+                        soyad.setText(myDetails.getSoyad());
                     }
-                }else {
-                    Dialog.createDialog(getWindow(),errorModel.getHata(),errorModel.getIslem(),0);
+                    kadi.setText(myDetails.getNick());
+                    email.setText(myDetails.getEmail());
+                    if(myDetails.getBiyografi()!=null){
+                        bio.setText(myDetails.getBiyografi());
+                    }
+                    LoadinDialog.isVisible(getApplicationContext(),false);
+                }
+            }
+
+            @Override
+            public void Error(ErrorModel returnList) {
+                try {
+                    new Dialog().createDialog(getWindow(), returnList.getBody(), 0);
+                }catch (Exception e){
+                    new Dialog().createDialog(getWindow(),  0);
+
                 }
             }
         });
@@ -247,23 +259,23 @@ public class EditProfile extends AppCompatActivity {
     private void updateData() {
         LoadinDialog.isVisible(getApplicationContext(),true);
         myDetailsModel myDetailsModel=new myDetailsModel(kadi.getText().toString(),ad.getText().toString(),soyad.getText().toString(),email.getText().toString(),null,bio.getText().toString(),0);
-        UpdateMyDetails.update(getApplicationContext(), myDetailsModel, new UpdateMyDetailsInterface() {
+        myUser.updateDetails(getApplicationContext(), myDetailsModel, new IMainResponse() {
             @Override
-            public void result(Boolean succsess, ErrorModel errorModel) {
-                if(succsess){
-                    LoadinDialog.isVisible(getApplicationContext(),false);
-                    finish();
-                }else{
-                    try {
-                        Dialog.createDialog(getWindow(),errorModel.getIslem(),errorModel.getHata(),0);
-                    }catch (Exception e){
-                        Dialog.createDialog(getWindow(),"Hata","Geçersiz karakter bulundu",0);
-                    }
-                    LoadinDialog.isVisible(getApplicationContext(),false);
-
-                }
-
+            public <T> void Succsess(Response<T> response) {
+                LoadinDialog.isVisible(getApplicationContext(),false);
+                finish();
             }
+
+            @Override
+            public void Error(ErrorModel returnList) {
+                LoadinDialog.isVisible(getApplicationContext(),false);
+                try {
+                    new Dialog().createDialog(getWindow(),returnList.getBody(),0);
+                }catch (Exception e){
+                   new Dialog().createDialog(getWindow(),0);
+                }
+            }
+
         });
     }
 }

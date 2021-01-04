@@ -13,8 +13,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.igzafer.viking.Interfaces.IMainResponse;
+import com.igzafer.viking.Model.ErrorModels.ErrorModel;
 import com.igzafer.viking.R;
-import com.igzafer.viking.api.Test.ConnectionTest;
+import com.igzafer.viking.api.Test.ServerControl;
+
+import retrofit2.Response;
 
 public class InternetError extends DialogFragment {
 
@@ -52,7 +56,7 @@ public class InternetError extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fnointernet, container, false);
+        view = inflater.inflate(R.layout.f503error, container, false);
 
         retry=view.findViewById(R.id.retry);
         spinKitView=view.findViewById(R.id.spin_kit);
@@ -61,10 +65,9 @@ public class InternetError extends DialogFragment {
             public void onClick(View v) {
                 spinKitView.setVisibility(View.VISIBLE);
                 retry.setVisibility(View.GONE);
-                ConnectionTest.iConnect(new ConnectionTest.conTest() {
+                new ServerControl().Control(new IMainResponse() {
                     @Override
-                    public void Connected(Boolean connected) {
-                        if(connected){
+                    public <T> void Succsess(Response<T> _response) {
                         try {
                             succListener.success();
                             dismiss();
@@ -79,16 +82,16 @@ public class InternetError extends DialogFragment {
 
                                 dismiss();
                             }
+                        }
 
                         }
-                    }else {
 
+                    @Override
+                    public void Error(ErrorModel _eresponse) {
                         retry.setVisibility(View.VISIBLE);
                         spinKitView.setVisibility(View.GONE);
                     }
-                    }
                 });
-
             }
         });
          return view;

@@ -17,11 +17,15 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.igzafer.viking.DialogFragment.InternetError;
 import com.igzafer.viking.Fragment.CommentFragment.EWDCommentFragment;
 import com.igzafer.viking.Fragment.CommentFragment.GetCommentFragment;
+import com.igzafer.viking.Interfaces.IMainResponse;
 import com.igzafer.viking.LocalDatabase.CommentStaticDb;
+import com.igzafer.viking.Model.ErrorModels.ErrorModel;
 import com.igzafer.viking.R;
 import com.igzafer.viking.TasarimsalDuzenlemeler.LoadinDialog;
 import com.igzafer.viking.WebView.CustomWebview;
-import com.igzafer.viking.api.Test.ConnectionTest;
+import com.igzafer.viking.api.Test.ServerControl;
+
+import retrofit2.Response;
 
 public class ReadPost extends AppCompatActivity implements InternetError.succ {
 
@@ -34,7 +38,7 @@ public class ReadPost extends AppCompatActivity implements InternetError.succ {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.readblog);
+        setContentView(R.layout.areadpost);
         customWebview = new CustomWebview();
         window=getWindow();
         Bundle bundle = getIntent().getExtras();
@@ -90,17 +94,18 @@ public class ReadPost extends AppCompatActivity implements InternetError.succ {
     @Override
     protected void onStart() {
         super.onStart();
-        ConnectionTest.iConnect(new ConnectionTest.conTest() {
+        new ServerControl().Control(new IMainResponse() {
             @Override
-            public void Connected(Boolean connected) {
-                if(connected){
-                    LoadinDialog.isVisible(getApplicationContext(),true);
-                    customWebview.tanim(webView,blogid,getApplicationContext(),frameLayout);
-                }else{
-                    DialogFragment dialogFragment= InternetError.newInstance();
-                    dialogFragment.setCancelable(false);
-                    dialogFragment.show(getSupportFragmentManager(),"");
-                }
+            public <T> void Succsess(Response<T> _response) {
+                LoadinDialog.isVisible(getApplicationContext(),true);
+                customWebview.tanim(webView,blogid,getApplicationContext(),frameLayout);
+            }
+
+            @Override
+            public void Error(ErrorModel _eresponse) {
+                DialogFragment dialogFragment= InternetError.newInstance();
+                dialogFragment.setCancelable(false);
+                dialogFragment.show(getSupportFragmentManager(),"");
             }
         });
 

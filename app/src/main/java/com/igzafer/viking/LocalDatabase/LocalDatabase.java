@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.igzafer.viking.Model.LoginRegisterModels.AuthModel;
 import com.igzafer.viking.Model.LoginRegisterModels.GetTokenModel;
-import com.igzafer.viking.Model.LoginRegisterModels.LoginModel;
 import com.igzafer.viking.Model.UserDetailModels.myDetailsModel;
 
 public class LocalDatabase {
@@ -30,16 +30,16 @@ public class LocalDatabase {
         preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
         return preferences.getString("password","");
     }
-    public static LoginModel getLoginDetails(Context ctx){
+    public static AuthModel getLoginDetails(Context ctx){
         preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
-        LoginModel loginModel=new LoginModel(getEmail(ctx),getPassword(ctx));
-        return loginModel;
+        AuthModel authModel=new AuthModel(getEmail(ctx),getPassword(ctx));
+        return authModel;
     }
-    public static void setEmailandPassword(Context ctx, LoginModel loginModel){
+    public static void setEmailandPassword(Context ctx, AuthModel authModel){
         preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
         editor = preferences.edit();
-        editor.putString("email",loginModel.getKadi());
-        editor.putString("password",loginModel.getSifre());
+        editor.putString("email",authModel.getEmailornickname());
+        editor.putString("password",authModel.getSifre());
         editor.apply();
     }
     public static void setUserDetails(Context ctx, myDetailsModel myDetailsModel){

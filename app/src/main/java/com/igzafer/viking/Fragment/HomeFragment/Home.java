@@ -17,17 +17,23 @@ import com.dinuscxj.refresh.RecyclerRefreshLayout;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.igzafer.viking.Adapter.PlaceholderAdapter;
 import com.igzafer.viking.Adapter.RecylerAdapter;
+import com.igzafer.viking.Interfaces.IMainResponse;
+import com.igzafer.viking.LocalDatabase.HomeStaticDb;
 import com.igzafer.viking.Model.BlogModels.BlogModel;
+import com.igzafer.viking.Model.ErrorModels.ErrorModel;
 import com.igzafer.viking.R;
 import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
-import com.igzafer.viking.LocalDatabase.HomeStaticDb;
-import com.igzafer.viking.api.AuthGerektirmeyen.GetBlog;
+import com.igzafer.viking.api.AuthGerektiren.Blogs;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Response;
+
 
 public class Home extends Fragment{
+
+
 
 
     public Home() {
@@ -46,8 +52,9 @@ public class Home extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_home, container, false);
+        view= inflater.inflate(R.layout.fhome, container, false);
         setUpTools();
+
         Handler hndler= new Handler();
         hndler.postDelayed(new Runnable() {
             @Override
@@ -74,8 +81,8 @@ public class Home extends Fragment{
             refreshLayout.setOnRefreshListener(new RecyclerRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    GetBlog.pageNumber=1;
-                    GetBlog.blogModels.clear();
+                    Blogs.pageNumber=1;
+                    HomeStaticDb.blogModel.clear();
                     getBlogWithApi();
                     //Refresh yaparken her şeyi 0'lıyorum.
                 }
@@ -86,12 +93,12 @@ public class Home extends Fragment{
                 nestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                     @Override
                     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        HomeStaticDb.setScrollPosition(scrollY);
+                        HomeStaticDb.kaydirma=scrollY;
                         if(v.getMeasuredHeight() == ((nestedScrollView.getChildAt(0).getMeasuredHeight())-(scrollY))){
-                            spin_kit.setVisibility(View.VISIBLE);
-                            if(GetBlog.pageNumber<GetBlog.maxPage){ ;
-                                GetBlog.pageNumber= GetBlog.pageNumber+1;
+                            if(Blogs.pageNumber<Blogs.maxPage){
+                                Blogs.pageNumber= Blogs.pageNumber+1;
                                 getBlogWithApi();
+                                spin_kit.setVisibility(View.VISIBLE);
                             }else{
                                 spin_kit.setVisibility(View.GONE);
                             }
@@ -104,7 +111,10 @@ public class Home extends Fragment{
 
         }
         catch (Exception e){
-            Dialog.createDialog(getActivity().getWindow(),"Tanımlama hatası","Tasarım elementlerine ulaşılamıyor. \n \nUygulamayı yeniden başlatmayı varsa güncellemeyi deneyin.",0);
+            if(getActivity()!=null){
+                new Dialog().createDialog(getActivity().getWindow(),0);
+            }
+
         }
     }
     private void setShimmerEffectandLoad() {
@@ -120,35 +130,61 @@ public class Home extends Fragment{
 
     }
     private void getBlogWithStaticDb(){
-        setUpRecy();
-        recylerAdapter=new RecylerAdapter(getContext(), HomeStaticDb.blogModel,getActivity().getWindow());
-        recyclerView.setAdapter(recylerAdapter);
-        refreshLayout.setRefreshing(false);
-        spin_kit.setVisibility(View.INVISIBLE);
-        Handler hndler= new Handler();
-        hndler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                nestedScrollView.scrollTo(0, HomeStaticDb.kaydirma);
-            }
-            // Bazı sorunlardan dolayı 1ms gecikme ekledim, 1ms sonra nestedScrollView Static database'deki posisyona gidecek
-            // Bu sayede sayfa değiştirince geri geldiğimizde kaldığımız yerden devam edeceğiz
-        },1);
-    }
-    private void getBlogWithApi(){
         try {
-            GetBlog.getBlog(recyclerView,getContext(),requireActivity().getWindow(),this,refreshLayout);
-        }catch (Exception e){
+            blogs=HomeStaticDb.blogModel;
+            setUpRecy();
+            recylerAdapter=new RecylerAdapter(getContext(),blogs, requireActivity().getWindow());
+            recyclerView.setAdapter(recylerAdapter);
+            refreshLayout.setRefreshing(false);
+            spin_kit.setVisibility(View.INVISIBLE);
+            Handler hndler= new Handler();
+            hndler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    nestedScrollView.scrollTo(0, HomeStaticDb.kaydirma);
+                }
+                // Bazı sorunlardan dolayı 1ms gecikme ekledim, 1ms sonra nestedScrollView Static database'deki posisyona gidecek
+                // Bu sayede sayfa değiştirince geri geldiğimizde kaldığımız yerden devam edeceğiz
+            },1);
+        }catch (Exception ignored){
 
         }
 
     }
+    RecylerAdapter adapter;
+    List<BlogModel> blogs=new ArrayList<>();
+    private void getBlogWithApi(){
+        assert requireActivity()!=null;
+        new Blogs().get(getContext(),new IMainResponse() {
+            @Override
+            public <T> void Succsess(Response<T> _response) {
+                blogs.addAll((List<BlogModel>) _response.body());
+                adapter= new RecylerAdapter(getContext(),blogs,requireActivity().getWindow());
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setItemViewCacheSize(20);
+                recyclerView.setDrawingCacheEnabled(true);
+                recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+                recyclerView.setAdapter(adapter);
+                refreshLayout.setRefreshing(false);
+                spin_kit.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void Error(ErrorModel _eresponse) {
+                new Dialog().createDialog(requireActivity().getWindow(),0);
+            }
+        });
+
+
+    }
+
+
     private void setUpRecy() {
         try {
             recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
             recyclerView.setHasFixedSize(false);
         }catch (Exception e){
-            Dialog.createDialog(getActivity().getWindow(),"Hata",e.getMessage(),0);
+            new Dialog().createDialog(requireActivity().getWindow(),0);
         }
 
     }

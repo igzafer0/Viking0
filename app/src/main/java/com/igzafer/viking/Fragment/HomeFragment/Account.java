@@ -18,26 +18,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-
 import com.igzafer.viking.Activity.EditProfile;
 import com.igzafer.viking.Activity.ImagePickerActivity;
 import com.igzafer.viking.Activity.MainActivity;
+import com.igzafer.viking.Interfaces.IMainResponse;
 import com.igzafer.viking.LocalDatabase.LocalDatabase;
 import com.igzafer.viking.Model.ErrorModels.ErrorModel;
 import com.igzafer.viking.Model.UserDetailModels.myDetailsModel;
 import com.igzafer.viking.R;
 import com.igzafer.viking.RestApi.BaseUrl;
 import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
-
-import com.igzafer.viking.api.AuthGerektiren.UpdateMyPp;
-import com.igzafer.viking.api.AuthGerektiren.getMyDetails;
-import com.igzafer.viking.api.AuthGerektiren.getMyDetailsInterface;
+import com.igzafer.viking.api.AuthGerektiren.MyDetails;
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import me.tankery.lib.circularseekbar.CircularSeekBar;
-import okhttp3.OkHttpClient;
+import retrofit2.Response;
 
 
 public class Account extends Fragment {
@@ -52,11 +48,13 @@ public class Account extends Fragment {
     BottomSheetDialog pp,more_settings;
     CircularSeekBar seekBar;
     Context ctx;
+    myDetailsModel myDetails;
+    MyDetails my=new MyDetails();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_account, container, false);
+        view= inflater.inflate(R.layout.faccount, container, false);
         ctx = getContext();
         setUpTools();
         //
@@ -68,44 +66,50 @@ public class Account extends Fragment {
 
     public void setUpData(){
 
-        getMyDetails.get(getContext(), new getMyDetailsInterface() {
-            @Override
-            public void result(Boolean succsess, myDetailsModel myDetails, ErrorModel errorModel) {
-                if(succsess){
-                    try {
+        my.getDetails(getContext(), new IMainResponse() {
+                    @Override
+                    public <T> void Succsess(Response<T> response) {
+                        myDetails=(myDetailsModel) response.body();
+                        try {
 
-                        Picasso picasso = new Picasso.Builder(getContext()).build();
-                        picasso.setLoggingEnabled(true);
-                        picasso.load(BaseUrl.pp_Url+myDetails.getAvatar())
-                                .into(imageView, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
+                            Picasso picasso = new Picasso.Builder(getContext()).build();
+                            picasso.setLoggingEnabled(true);
+                            picasso.load(BaseUrl.pp_Url+myDetails.getAvatar())
+                                    .into(imageView, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
 
-                                        k_adi.setText(myDetails.getNick());
-                                        bio.setText(myDetails.getBiyografi());
-                                    }
+                                            k_adi.setText(myDetails.getNick());
+                                            bio.setText(myDetails.getBiyografi());
+                                        }
 
-                                    @Override
-                                    public void onError(Exception e) {
+                                        @Override
+                                        public void onError(Exception e) {
 
-                                        k_adi.setText(myDetails.getNick());
-                                        bio.setText(myDetails.getBiyografi());
-                                        Log.d("winter",e.getMessage());
-                                    }
-                                });
+                                            k_adi.setText(myDetails.getNick());
+                                            bio.setText(myDetails.getBiyografi());
+                                            Log.d("winter",e.getMessage());
+                                        }
+                                    });
+
+                        }
+                        catch (Exception e){
+
+                            k_adi.setText(myDetails.getNick());
+                            bio.setText(myDetails.getBiyografi());
+                        }
+                    }
+
+                    @Override
+                    public void Error(ErrorModel returnList) {
+                        try {
+                            new Dialog().createDialog(requireActivity().getWindow(), returnList.getBody(), 0);
+                        }catch (Exception ignored){
+
+                        }
 
                     }
-                    catch (Exception e){
-
-                        k_adi.setText(myDetails.getNick());
-                        bio.setText(myDetails.getBiyografi());
-                    }
-
-                }else{
-                    Dialog.createDialog(getActivity().getWindow(),errorModel.getIslem(),errorModel.getHata(),0);
-                }
-            }
-        });
+                });
 
     }
     private void LoadFromLocalDatabase() {
@@ -148,7 +152,7 @@ public class Account extends Fragment {
         dog = view.findViewById(R.id.dog);
         imageView.setOnClickListener(v -> {
             try {
-                View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottom, null);
+                View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottomsheetpp, null);
                 pp = new BottomSheetDialog(getContext());
                 pp.setContentView(sheetView);
                 pp.show();
@@ -183,7 +187,7 @@ public class Account extends Fragment {
         more.setOnClickListener(v -> {
             try {
                 //dialog ayarları falan
-                final View sheetView = getActivity().getLayoutInflater().inflate(R.layout.more_settings, null);
+                final View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottomsheetmoresettings, null);
                 more_settings = new BottomSheetDialog(getContext());
                 more_settings.setContentView(sheetView);
                 more_settings.show();
@@ -260,17 +264,20 @@ public class Account extends Fragment {
     }
     private void updatePp(Uri uri){
         pp.dismiss();
-        UpdateMyPp pps = new UpdateMyPp();
-        pps.update(getContext(), uri, (succsess, errorModel) -> {
-            if(succsess){
-                setUpData();
-            }else{
-                try {
-                    Dialog.createDialog(requireActivity().getWindow(),errorModel.getIslem(),errorModel.getHata(),0);
-                }catch (Exception e){
-                    Dialog.createDialog(requireActivity().getWindow(),"Hata",e.getMessage(),0);
-                }
 
+        my.changeProfilePicture(getContext(), uri, new IMainResponse() {
+            @Override
+            public <T> void Succsess(Response<T> response) {
+                setUpData();
+            }
+
+            @Override
+            public void Error(ErrorModel returnList) {
+                try {
+                    new Dialog().createDialog(requireActivity().getWindow(),returnList.getBody(),0);
+                }catch (Exception e){
+                    new Dialog().createDialog(requireActivity().getWindow(),0);
+                }
             }
         });
 

@@ -50,13 +50,13 @@ public class GetComment {
 
 
                 }else {
-                    Dialog.createDialog(window,"Bir hata oluştu","Hata kodu; "+response.code(),0);
+                    new Dialog().createDialog(window,0);
                 }
             }
 
             @Override
             public void onFailure(Call<List<getCommentModel>> call, Throwable t) {
-                Dialog.createDialog(window,"Bir hata oluştu","Hata kodu; "+t.getMessage(),0);
+                new Dialog().createDialog(window,0);
             }
         });
     }

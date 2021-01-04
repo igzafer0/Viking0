@@ -3,7 +3,7 @@ package com.igzafer.viking.Model.UserDetailModels;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class myDetailsModel {
+public class myDetailsModel<T> {
 
     @SerializedName("nickname")
     @Expose

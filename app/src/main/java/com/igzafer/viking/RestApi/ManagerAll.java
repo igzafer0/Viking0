@@ -4,11 +4,9 @@ import com.igzafer.viking.Model.BlogModels.BlogModel;
 import com.igzafer.viking.Model.BlogModels.GetBlogByPageModel;
 import com.igzafer.viking.Model.CommentModels.addCommentModel;
 import com.igzafer.viking.Model.CommentModels.getCommentModel;
+import com.igzafer.viking.Model.LoginRegisterModels.AuthModel;
 import com.igzafer.viking.Model.LoginRegisterModels.GetTokenModel;
-import com.igzafer.viking.Model.LoginRegisterModels.LoginModel;
-import com.igzafer.viking.Model.LoginRegisterModels.RegisterModel;
 import com.igzafer.viking.Model.UserDetailModels.myDetailsModel;
-
 
 import java.util.List;
 
@@ -23,16 +21,16 @@ public class ManagerAll extends BaseManager {
     }
 
 
-    public Call<GetTokenModel> register(RegisterModel registerModel){
-        Call<GetTokenModel>call=getRestApiClient().register(registerModel);
+    public Call<GetTokenModel> register(AuthModel authModel){
+        Call<GetTokenModel>call=getRestApiClient().register(authModel);
         return call;
     }
-    public Call<GetTokenModel> login(LoginModel loginModel){
-        Call<GetTokenModel>call=getRestApiClient().login(loginModel);
+    public Call<GetTokenModel> login(AuthModel authModel){
+        Call<GetTokenModel>call=getRestApiClient().login(authModel);
         return call;
     }
-    public Call<List<BlogModel>> getBlogByPage(GetBlogByPageModel model){
-        Call<List<BlogModel>>call=getRestApiClient().getBlogByPage(model);
+    public Call<List<BlogModel>> getBlogByPage(String key ,GetBlogByPageModel model){
+        Call<List<BlogModel>>call=getRestApiClient().getBlogByPage("Bearer "+key, model);
         return call;
     }
 
@@ -64,6 +62,8 @@ public class ManagerAll extends BaseManager {
         Call<addCommentModel>call=getRestApiClient().addComment("Bearer "+token,commentModel);
         return call;
     }
+
+
 
 
 

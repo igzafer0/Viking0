@@ -28,7 +28,7 @@ public class PlaceholderAdapter  extends RecyclerView.Adapter<PlaceholderHolder>
     @Override
     public PlaceholderHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater=LayoutInflater.from(main);
-        View view= layoutInflater.inflate(R.layout.placeholder,parent,false);
+        View view= layoutInflater.inflate(R.layout.designplaceholder,parent,false);
 
         return new PlaceholderHolder(view);
 

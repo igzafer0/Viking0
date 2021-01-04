@@ -2,11 +2,9 @@ package com.igzafer.viking.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,33 +13,27 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import com.igzafer.viking.DialogFragment.InternetError;
+import com.igzafer.viking.Interfaces.IMainResponse;
 import com.igzafer.viking.Model.ErrorModels.ErrorModel;
-import com.igzafer.viking.Model.LoginRegisterModels.LoginModel;
-import com.igzafer.viking.Model.LoginRegisterModels.RegisterModel;
+import com.igzafer.viking.Model.LoginRegisterModels.AuthModel;
 import com.igzafer.viking.R;
 import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
 import com.igzafer.viking.TasarimsalDuzenlemeler.LoadinDialog;
 import com.igzafer.viking.TasarimsalDuzenlemeler.StatusAndNavbar;
-import com.igzafer.viking.api.LoginRegister.TokenControl;
-import com.igzafer.viking.api.LoginRegister.TokenControlInterface;
-import com.igzafer.viking.api.LoginRegister.Login;
-import com.igzafer.viking.api.LoginRegister.LoginInterface;
-import com.igzafer.viking.api.LoginRegister.Register;
-import com.igzafer.viking.api.LoginRegister.RegisterInterface;
+import com.igzafer.viking.api.Auth.Auth;
+
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements InternetError.succ{
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
+
     Boolean ana_sayfa=true;
     @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        editor = preferences.edit();
+        setContentView(R.layout.amain);
+
         status_Bar(1);
         ana_sayfa=true;
         //ana sayfa değişkeni eğer anasayfadaysa geri çıkıldığında gerçekten geri çıksın ana sayfada değilse ana sayfaya dönsün diye yapıldı
@@ -49,19 +41,21 @@ public class MainActivity extends AppCompatActivity implements InternetError.suc
     }
 
     private void loginControl(){
-        TokenControl.LoginControl(getApplicationContext(), new TokenControlInterface() {
+        new Auth().Control(getApplicationContext(), new IMainResponse() {
             @Override
-            public void LoginSuccsess(Boolean success) {
-                if(success){
-                    Intent intent = new Intent(getApplicationContext(), Viking.class);
-                    startActivity(intent);
-                    finish();
-                }else {
-                    setContentView(R.layout.floginorsign);
-                    Log.d("winter","basarisiz");
-                    firstScreen();
-                }
+            public <T> void Succsess(Response<T> _response) {
+                Intent intent = new Intent(getApplicationContext(), Viking.class);
+                startActivity(intent);
+                finish();
             }
+
+            @Override
+            public void Error(ErrorModel _eresponse) {
+                setContentView(R.layout.screenmain);
+                Log.d("winter","basarisiz");
+                firstScreen();
+            }
+
         });
     }
     private void status_Bar(int mod) {
@@ -79,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements InternetError.suc
         status_Bar(2);
         imageView=findViewById(R.id.im1);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            imageView.setImageDrawable(getApplicationContext().getDrawable(R.drawable.loginsvg));
+            imageView.setImageDrawable(getApplicationContext().getDrawable(R.drawable.svgmain));
         }
        login=findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements InternetError.suc
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
                     return;
                 }
-                setContentView(R.layout.flogin);
+                setContentView(R.layout.screenlogin);
                 ana_sayfa=false;
                 login_fragment();
 
@@ -129,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements InternetError.suc
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.flogin);
+                setContentView(R.layout.screenlogin);
                 login_fragment();
             }
         });
@@ -137,19 +131,20 @@ public class MainActivity extends AppCompatActivity implements InternetError.suc
             @Override
             public void onClick(View view) {
                 LoadinDialog.isVisible(view.getContext(),true);
-                RegisterModel registerModels= new RegisterModel(eposta.getText().toString(),pass.getText().toString(),kadi.getText().toString());
-                Register.register(getApplicationContext(), registerModels, new RegisterInterface() {
+                AuthModel registerModels= new AuthModel(kadi.getText().toString(),pass.getText().toString(),eposta.getText().toString());
+                new Auth().Register(getApplicationContext(), registerModels, new IMainResponse() {
                     @Override
-                    public void registerResponse(Boolean succsess, ErrorModel errorModel) {
-                        if(succsess){
-                            LoadinDialog.isVisible(view.getContext(),false);
-                            Intent intent = new Intent(getApplicationContext(), Viking.class);
-                            startActivity(intent);
-                            finish();
-                        }else{
-                            Dialog.createDialog(getWindow(),errorModel.getIslem(),errorModel.getHata(),0);
-                            LoadinDialog.isVisible(view.getContext(),false);
-                        }
+                    public <T> void Succsess(Response<T> _response) {
+                        LoadinDialog.isVisible(view.getContext(),false);
+                        Intent intent = new Intent(getApplicationContext(), Viking.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void Error(ErrorModel _eresponse) {
+                        new Dialog().createDialog(getWindow(),_eresponse.getBody(),0);
+                        LoadinDialog.isVisible(view.getContext(),false);
                     }
 
                 });
@@ -181,21 +176,24 @@ public class MainActivity extends AppCompatActivity implements InternetError.suc
                     finish();
                 });
         login.setOnClickListener(v -> {
-            LoginModel loginModel=new LoginModel(eposta.getText().toString(),pass.getText().toString());
+            AuthModel authModel=new AuthModel(eposta.getText().toString(),pass.getText().toString());
+            //Log.d("winter",authModel.getEmail());
             LoadinDialog.isVisible(v.getContext(),true);
-            Login.login(getApplicationContext(), loginModel, new LoginInterface() {
+            new Auth().Login(getApplicationContext(), authModel, new IMainResponse() {
                 @Override
-                public void LoginResponse(Boolean succsess, ErrorModel errorModel) {
-                    if(succsess){
-                        LoadinDialog.isVisible(v.getContext(),false);
-                        Intent intent = new Intent(getApplicationContext(), Viking.class);
-                        startActivity(intent);
-                        finish();
-                    }else {
-                        Dialog.createDialog(getWindow(),errorModel.getIslem(),errorModel.getHata(),0);
-                        LoadinDialog.isVisible(v.getContext(),false);
-                    }
+                public <T> void Succsess(Response<T> _response) {
+                    LoadinDialog.isVisible(v.getContext(),false);
+                    Intent intent = new Intent(getApplicationContext(), Viking.class);
+                    startActivity(intent);
+                    finish();
                 }
+
+                @Override
+                public void Error(ErrorModel _eresponse) {
+                    new Dialog().createDialog(getWindow(),_eresponse.getBody(),0);
+                    LoadinDialog.isVisible(v.getContext(),false);
+                }
+
 
             });
         });

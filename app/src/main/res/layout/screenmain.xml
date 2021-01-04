@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/bgs">
+<ImageView
+    android:layout_width="match_parent"
+    android:id="@+id/im1"
+
+    android:layout_centerInParent="true"
+    android:layout_height="match_parent">
+
+</ImageView>
+  <TextView
+      android:layout_width="wrap_content"
+      android:text="VIKING"
+      android:background="@android:color/transparent"
+      android:textSize="40sp"
+      android:layout_margin="15dp"
+      android:fontFamily="@font/tesla"
+      android:textColor="@color/colorWhite"
+      android:gravity="center"
+      android:paddingEnd="5dp"
+      android:layout_alignParentTop="true"
+      android:id="@+id/app_name"
+      android:paddingStart="5dp"
+      android:layout_height="wrap_content">
+
+  </TextView>
+  <TextView
+      android:layout_width="wrap_content"
+      android:text="Lorem ipsum dolar sit amet"
+      android:background="@color/bg"
+      android:textSize="12.7sp"
+      android:layout_below="@id/app_name"
+      android:layout_marginLeft="15dp"
+      android:visibility="gone"
+      android:layout_marginTop="-14dp"
+      android:fontFamily="@font/abc"
+      android:textColor="@color/colorWhite"
+      android:gravity="center"
+      android:paddingEnd="5dp"
+
+      android:paddingStart="5dp"
+      android:layout_height="wrap_content">
+
+  </TextView>
+  <Button
+      android:background="@drawable/btndesignwhite"
+      android:layout_width="match_parent"
+      android:id="@+id/login"
+      android:fontFamily="@font/abc"
+      android:textAllCaps="false"
+      android:backgroundTint="@color/colorWhite"
+      android:textColor="@color/bg"
+      android:text="Giriş Yap"
+      style="@style/SelectableItemBackgroundButton"
+      android:layout_marginRight="30dp"
+      android:layout_above="@id/reg"
+      android:layout_marginLeft="30dp"
+      android:layout_marginBottom="10dp"
+      android:layout_height="wrap_content">
+
+  </Button>
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_above="@id/register"
+      android:gravity="center"
+      android:layout_marginLeft="30dp"
+      android:id="@+id/reg"
+      android:layout_marginRight="30dp"
+      android:layout_height="20dp">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_centerInParent="true"
+        android:background="@color/colorWhite"
+        ></ImageView>
+    <TextView
+        android:layout_width="wrap_content"
+      android:text="ya da"
+        android:background="@color/bgs"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/abc"
+        android:textColor="@color/colorWhite"
+        android:gravity="center"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        android:layout_height="wrap_content">
+
+    </TextView>
+  </RelativeLayout>
+  <Button
+      android:background="@drawable/btndesignblack"
+      android:layout_width="match_parent"
+      android:layout_alignParentBottom="true"
+      android:layout_marginTop="10dp"
+      android:layout_marginRight="30dp"
+
+      android:id="@+id/register"
+
+      style="@style/SelectableItemBackgroundButton"
+      android:layout_marginBottom="20dp"
+      android:layout_marginLeft="30dp"
+      android:textColor="@color/colorWhite"
+      android:fontFamily="@font/abc"
+      android:textAllCaps="false"
+      android:text="Kayıt Ol"
+      android:layout_height="wrap_content">
+
+  </Button>
+</RelativeLayout>

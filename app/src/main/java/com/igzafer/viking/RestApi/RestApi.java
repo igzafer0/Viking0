@@ -6,9 +6,8 @@ import com.igzafer.viking.Model.BlogModels.BlogModel;
 import com.igzafer.viking.Model.BlogModels.GetBlogByPageModel;
 import com.igzafer.viking.Model.CommentModels.addCommentModel;
 import com.igzafer.viking.Model.CommentModels.getCommentModel;
+import com.igzafer.viking.Model.LoginRegisterModels.AuthModel;
 import com.igzafer.viking.Model.LoginRegisterModels.GetTokenModel;
-import com.igzafer.viking.Model.LoginRegisterModels.LoginModel;
-import com.igzafer.viking.Model.LoginRegisterModels.RegisterModel;
 import com.igzafer.viking.Model.UserDetailModels.myDetailsModel;
 
 import java.util.List;
@@ -27,13 +26,14 @@ import retrofit2.http.Query;
 public interface RestApi {
     //kayıt ol
     @POST("auth/register")
-    Call<GetTokenModel>register(@Body RegisterModel registerModel);
+    Call<GetTokenModel>register(@Body AuthModel authModel);
     //Giriş yap
     @POST("auth/login")
-    Call<GetTokenModel> login(@Body LoginModel loginModel);
+    Call<GetTokenModel> login(@Body AuthModel authModel);
     //Blokları sayfa sırasına göre çekme
     @POST("blogs/getbypage")
-    Call<List<BlogModel>>getBlogByPage(@Body GetBlogByPageModel getBlogByPageModel);
+    Call<List<BlogModel>>getBlogByPage(@Header("Authorization")String token, @Body GetBlogByPageModel getBlogByPageModel);
+
     //Profil bilgilerini çekme
     @GET("users/getMyProfil")
     Call<myDetailsModel>getMyDetails(@Header("Authorization")String token);

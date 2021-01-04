@@ -4,31 +4,20 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class ErrorModel {
+
     @SerializedName("errorMessages")
     @Expose
-    String hata;
-    @SerializedName("operation")
-    @Expose
-    String islem;
+    private String body;
 
-    public ErrorModel(String hata, String islem) {
-        this.hata = hata;
-        this.islem = islem;
+    public ErrorModel(String body) {
+        this.body = body;
     }
 
-    public String getHata() {
-        return hata;
+    public String getBody() {
+        return body;
     }
 
-    public void setHata(String hata) {
-        this.hata = hata;
-    }
-
-    public String getIslem() {
-        return islem;
-    }
-
-    public void setIslem(String islem) {
-        this.islem = islem;
+    public void setBody(String body) {
+        this.body = body;
     }
 }

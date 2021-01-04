@@ -3,6 +3,8 @@ package com.igzafer.viking.Fragment.CommentFragment;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,13 +22,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.igzafer.viking.Animation.Animation;
+import com.igzafer.viking.Interfaces.IMainResponse;
 import com.igzafer.viking.LocalDatabase.CommentStaticDb;
 import com.igzafer.viking.Model.CommentModels.addCommentModel;
+import com.igzafer.viking.Model.ErrorModels.ErrorModel;
 import com.igzafer.viking.R;
 import com.igzafer.viking.TasarimsalDuzenlemeler.Dialog;
-import com.igzafer.viking.api.AuthGerektiren.SendComment;
-import com.igzafer.viking.api.AuthGerektiren.SendCommentInterface;
+import com.igzafer.viking.api.AuthGerektiren.Comment;
 import com.igzafer.viking.api.AuthGerektirmeyen.GetComment;
+
+import retrofit2.Response;
 
 import static com.igzafer.viking.Activity.ReadPost.blogid;
 import static com.igzafer.viking.Activity.ReadPost.bottomSheetBehavior;
@@ -42,8 +48,8 @@ public class GetCommentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.getcommentfragment, container, false);
-        sendComment= new SendComment();
+        view= inflater.inflate(R.layout.fgetcomment, container, false);
+
         setuptools();
         setupscrool();
     return view;
@@ -56,8 +62,8 @@ public class GetCommentFragment extends Fragment {
 
     EditText comment;
     RecyclerView recyclerView;
-    TextView paylas;
-    SendComment sendComment;
+    TextView paylas,etCharacter;
+
     SpinKitView spinKitView,spinner;
     NestedScrollView scrollView;
     //RelativeLayout edit_rl;
@@ -71,6 +77,7 @@ public class GetCommentFragment extends Fragment {
         scrollView=view.findViewById(R.id.scrollView);
         spinner= view.findViewById(R.id.spinner);
         spinner.setVisibility(View.VISIBLE);
+        etCharacter=view.findViewById(R.id.etCharacterNum);
         getComment();
         layout=view.findViewById(R.id.botomSheet);
         spinKitView=view.findViewById(R.id.loading);
@@ -78,25 +85,67 @@ public class GetCommentFragment extends Fragment {
 
         paylas=view.findViewById(R.id.paylas);
         comment=view.findViewById(R.id.comment);
+        comment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length()>20){
+                    etCharacter.setVisibility(View.GONE);
+                }else{
+                    etCharacter.setVisibility(View.VISIBLE);
+                    etCharacter.setText(String.valueOf(s.length()+"/20"));
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         paylas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                etCharacter.setVisibility(View.GONE);
                 paylas.setVisibility(View.GONE);
                 spinKitView.setVisibility(View.VISIBLE);
-                sendComment.add(getContext(), new addCommentModel(blogid, comment.getText().toString()), getActivity().getWindow(), new SendCommentInterface() {
+                new Comment().sendComment(getContext(), new addCommentModel(blogid, comment.getText().toString()), new IMainResponse() {
                     @Override
-                    public void response(Boolean succsess) {
-                        if(succsess){
-                            comment.setText("");
+                    public <T> void Succsess(Response<T> _response) {
+                        comment.setText("");
+                        paylas.setVisibility(View.VISIBLE);
+                        etCharacter.setVisibility(View.VISIBLE);
+                        spinKitView.setVisibility(View.GONE);
+                        getComment();
+                    }
+
+                    @Override
+                    public void Error(ErrorModel _eresponse) {
+                        comment.startAnimation(new Animation().shakeIt());
+                        paylas.startAnimation(new Animation().shakeIt());
+                        etCharacter.startAnimation(new Animation().shakeIt());
+                        try {
                             paylas.setVisibility(View.VISIBLE);
+                            etCharacter.setVisibility(View.VISIBLE);
+
                             spinKitView.setVisibility(View.GONE);
-                            getComment();
-                        }else{
+                            //new Dialog().createDialog(requireActivity().getWindow(),_eresponse.getBody(),0);
+                        }catch (Exception e){
                             paylas.setVisibility(View.VISIBLE);
+                            etCharacter.setVisibility(View.VISIBLE);
                             spinKitView.setVisibility(View.GONE);
+                            if(getActivity()!=null){
+                              //  new Dialog().createDialog(requireActivity().getWindow(),0);
+                            }
+
                         }
 
                     }
+
                 });
             }
         });
@@ -183,7 +232,7 @@ public class GetCommentFragment extends Fragment {
             try {
                 _getComment.get(getContext(), blogid, window,recyclerView,scrollView,spinner);
             }catch (Exception e){
-                Dialog.createDialog(window,"Hata",e.getMessage(),0);
+                new Dialog().createDialog(window,0);
             }
 
 
